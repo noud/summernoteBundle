@@ -1,4 +1,4 @@
-# Toinou/SummernoteBundle
+# Toinou97434/SummernoteBundle
 This bundle provides a form type based on Summernote, a WYSIWYG editor. (A CKEditor and TinyMCE alternative and Open Source).
 
 Requirements
@@ -10,47 +10,71 @@ Minimum requirements for this bundle:
 
 Installation
 ------------
-* Add Toinou97434/SummernoteBundle to your application's `composer.json` file
+You have two ways to download this bundle:
+* **First way**
+Editing your application's `composer.json` file
 ```json
 {
     "require": {
-        "pepsit36/summernotebundle": "dev-master"
+        // Your other bundles
+        "toinou97434/summernotebundle": "dev-master"
     }
 }
 ```
+And making your composer.phar update manually:
+```command
+php composer.phar update
+```
+* **Second way**
+By entering in your terminal directly this code:
+```command
+php composer.phar require "toinou97434/summernotebundle"
+```
+Composer will automatically add the bundle in your `composer.json` file and download it.
 
-* Add Pepsit36/SummernoteBundle to your application's `AppKernel.php` file
+* Next you have to add Toinou97434/SummernoteBundle to your application's `AppKernel.php` file:
 ```php
-new Pepsit36\SummernoteBundle\Pepsit36SummernoteBundle(),
+new Toinou97434\SummernoteBundle\ToinouSummernoteBundle(),
 ```
 
 * Add routing information to your application's `routing.yml`:
 ```yml
-pepsit36_summernote:
-    resource: "@Pepsit36SummernoteBundle/Resources/config/routing.yml"
+toinou_summernote:
+    resource: "@ToinouSummernoteBundle/Resources/config/routing.yml"
     prefix:   /
 ```
 
 Minimal Configuration
 ---------------------
-* You must to execute a update of your database to add images' entity.
+This bundle is using Doctrine Entity system. You can edit the `SummernoteImage.php` to add fields as *uploadedAt*, *updatedAt* or combine with FOSUserBundle by adding a relation to your user class. You can submit all your edits to the community, you're welcome!
+
+* After editing the class, you have to execute an update of your database to add images' entity:
 ```command
-doctrine:schema:update --force
+// The first line isn't required but I recommand to execute it and watch which edits the command will do...
+php bin/console doctrine:schema:update --dump-sql
+php bin/console doctrine:schema:update --force
 ```
 
-* You need to download the package on summernote's website : http://summernote.org/ 
-and you can extract his `dist` folder on the folder `YourApp/web/resources/summernote`, you can change it in your `config.yml`, for more information see below.
+* You need to download the package on summernote's website : http://summernote.org/
+Extract his `dist` folder in your `web` folder. You can change it in your `config.yml` (more informations below).
 
 * Please consider installing yourself the dependence of Summernote (Bootstrap + JQuery) in the page you'll use it. Please refer to [Bootstrap's Website](http://getbootstrap.com/getting-started/) and [JQuery's Website](http://jquery.com/download/) for more informations.
 ```html
 <!-- include libraries(jQuery, bootstrap) -->
-<link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css" rel="stylesheet">
+    <!-- Bootstrap 3 version -->
+    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css" rel="stylesheet">
+    <!-- Bootstrap 4 version -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css">
 
-<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.js"></script> 
-<script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.js"></script> 
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <!-- Bootstrap 3 version -->
+    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.js"></script>
+    <!-- Bootstrap 4 version -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
 ```
 
-* For security reasons you need to create the folder manually where the picture will be storage. The default folder is `YourApp/web/uploads/images/summernote`, you can change it in your `config.yml`, for more information see below.
+* For security reasons you need to create the folder manually where the picture will be storage. The default folder is `web/uploads/images/summernote`, you can change it in your `config.yml` (more informations below).
 
 Additional Configuration
 ------------------------
