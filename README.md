@@ -1,6 +1,11 @@
 # Toinou97434/SummernoteBundle
 This bundle provides a form type based on Summernote, a WYSIWYG editor. (A CKEditor and TinyMCE alternative and Open Source).
 
+I had trouble installing the Pepsit36's SummernoteBundle on my Symfony 3.3.11 project so I decided to create a bundle and use his code in order to make it work in my project.
+You have to know that this bundle isn't really mine but an adaptation of Pepsit36's work.
+
+[Pepsit36/SummernoteBundle](https://github.com/Pepsit36/SummernoteBundle)
+
 Requirements
 ------------
 Minimum requirements for this bundle:
@@ -10,101 +15,130 @@ Minimum requirements for this bundle:
 
 Installation
 ------------
-You have two ways to download this bundle:
-* **First way**
-Editing your application's `composer.json` file
+**Step 1 : Downloading & installation**
+You have two ways to download and install the bundle:
+* **First way:** by editing your `composer.json` file and proceding to an update:
 ```json
 {
     "require": {
-        // Your other bundles
-        "toinou97434/summernotebundle": "dev-master"
+        "Toinou97434/summernotebundle": "dev-master"
     }
 }
 ```
-And making your composer.phar update manually:
+and making your composer update:
 ```command
 php composer.phar update
 ```
-* **Second way**
-By entering in your terminal directly this code:
+
+* **Second way:** by using composer.phar directly:
 ```command
-php composer.phar require "toinou97434/summernotebundle"
+php composer.phar require Toinou97434/summernotebundle
 ```
-Composer will automatically add the bundle in your `composer.json` file and download it.
+Composer will automatically add the bundle in your composer.json file and download it.
 
-* Next you have to add Toinou97434/SummernoteBundle to your application's `AppKernel.php` file:
+**Step 2 : Enable the bundle**
+In your `AppKernel.php` add the following lines in order to activate the bundle:
 ```php
-new Toinou97434\SummernoteBundle\ToinouSummernoteBundle(),
+<?php
+// app/AppKernel.php
+
+public function registerBundles()
+{
+    $bundles = array(
+        // ...
+        new Toinou\SummernoteBundle\ToinouSummernoteBundle(),
+    );
+}
 ```
 
-* Add routing information to your application's `routing.yml`:
+**Step 3 : Import ToinouSummernoteBundle routing file**
 ```yml
+# app/config/routing.yml
 toinou_summernote:
     resource: "@ToinouSummernoteBundle/Resources/config/routing.yml"
     prefix:   /
 ```
 
-Minimal Configuration
----------------------
-This bundle is using Doctrine Entity system. You can edit the `SummernoteImage.php` to add fields as *uploadedAt*, *updatedAt* or combine with FOSUserBundle by adding a relation to your user class. You can submit all your edits to the community, you're welcome!
+**Step 4 : Entity**
+This bundle is using Doctrine ORM system for the image upload system.
+Even if you will not use the image upload system, you have to edit your database...
 
-* After editing the class, you have to execute an update of your database to add images' entity:
+You can edit the `Entity/SummernoteImage.php` to add fields as *uploadedAt*, *updatedAt* or combine with FOSUserBundle by adding a relation to your user class. You can submit all your edits to the community, you're welcome!
+After editing (or not) the class, you have to update your database schema:
 ```command
-// The first line isn't required but I recommand to execute it and watch which edits the command will do...
-php bin/console doctrine:schema:update --dump-sql
+php bin/console doctrine:schema:udpate --dump-sql
 php bin/console doctrine:schema:update --force
 ```
+*The first line is not required but I highly recommand to execute it before forcing the database update... It will prevent any problems*
 
-* You need to download the package on summernote's website : http://summernote.org/
-Extract his `dist` folder in your `web` folder. You can change it in your `config.yml` (more informations below).
+**Step 5 : Downloading the package**
+This bundle isn't provided with Summernote included, you have to download it directly on [summernote's website](https://summernote.org).
+After extraction of the archive, copy/paste the dist folder in the bundle or folder you want in your application. Add it by using Assets or Assetic in your template.
+Or you can change it in your `config.yml` (more informations below).
 
-* Please consider installing yourself the dependence of Summernote (Bootstrap + JQuery) in the page you'll use it. Please refer to [Bootstrap's Website](http://getbootstrap.com/getting-started/) and [JQuery's Website](http://jquery.com/download/) for more informations.
-```html
-<!-- include libraries(jQuery, bootstrap) -->
-    <!-- Bootstrap 3 version -->
-    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css" rel="stylesheet">
-    <!-- Bootstrap 4 version -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css">
+**Step 6 : Bootstrap and JQuery**
+The Summernote editor works with [Bootstrap](https://getbootstrap.com/) and [JQuery](http://jquery.com/download/), you have to use these libraries to make the editor work.
 
-<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-    <!-- Bootstrap 3 version -->
-    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.js"></script>
-    <!-- Bootstrap 4 version -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
+**Step 7 : Upload folder**
+For security reasons you need to create the folder manually where the picture will be stored. The default folder is `web/uploads/images/summernote`, you can change it in your `config.yml` (more informations below).
+
+
+The bundle is finally installed in your application!
+
+Usage
+-----
+This bundle provides a form type you have to use with textarea.
+Just add a summernote type in your form:
+```php
+// src/AppBundle/Form/YourFormType.php
+
+namespace AppBundle\Form;
+
+//...
+use Toinou\SummernoteBundle\Form\Type\SummernoteType;
+
+class YourFormType extends AbstractType
+{
+    /**
+     * {@inheritdoc}
+     */
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        $builder->add( "yourField",SummernoteType::class ); //Symfony 3
+    }
+}
 ```
 
-* For security reasons you need to create the folder manually where the picture will be storage. The default folder is `web/uploads/images/summernote`, you can change it in your `config.yml` (more informations below).
+In your twig template you have to import the CSS and JS needed to make summernote work:
+```Twig
+...
+{# Toinou97434/Summernote CSS - usefull only if summernote_path is configurate with one path #}
+{{ summernote_form_stylesheet(form) }}
 
-Additional Configuration
-------------------------
-Pepsit36/Summernote supports some configuration parameters. These parameters can be configured in config.yml. See below the default configuration.
+{# Toinou97434/Summernote JS #}
+{{ summernote_form_javascript(form) }}
+```
 
-* **width**: This is the width of Summernote widget (default: 0)
+Configurations
+--------------
+The bundle comes with customisable parameters. You can configure these parameters in the `app/config/config.yml` file.
+**Initialisation:** By adding `toinou_summernote` in your `config.yml` file.
+* **width and height:** (default: 0)
 ```yml
-pepsit36_summernote:
-    ...
+toinou_summernote:
     width: 0
-```
-
-* **height**: This is the height of Summernote widget.
-```yml
-pepsit36_summernote:
-    ...
     height: 0
 ```
 
-* **focus**: This will focus editable area after initializing Summernote widget.
+* **focus:** This will focus on the editable area after initialisation of the Summernote widget.
 ```yml
-pepsit36_summernote:
-    ...
+toinou_summernote:
     focus: false
 ```
 
 * **toolbar**: This will configure the toolbar of Summernote widget.
 ```yml
-pepsit36_summernote:
-    ...
+toinou_summernote:
     toolbar:
         - { name: 'style', buttons: ['style'] }
         - { name: 'fontsize', buttons: ['fontsize'] }
@@ -121,29 +155,25 @@ pepsit36_summernote:
 
 * **styleTags**: This will configure the style tags available for Summernote widget.
 ```yml
-pepsit36_summernote:
-    ...
+toinou_summernote:
     styleTags: ['p', 'blockquote', 'pre', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6']
 ```
 
 * **fontNames**: This will configure the font names available for Summernote widget.
 ```yml
-pepsit36_summernote:
-    ...
+toinou_summernote:
     fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'Helvetica Neue', 'Helvetica', 'Impact', 'Lucida Grande', 'Tahoma', 'Times New Roman', 'Verdana']
 ```
 
 * **fontSizes**: This will configure the font sizes available for Summernote widget.
 ```yml
-pepsit36_summernote:
-    ...
+toinou_summernote:
     fontSizes : ['8', '9', '10', '11', '12', '14', '18', '24', '36']
 ```
 
 * **colors**: This will configure the colors available for Summernote widget.
 ```yml
-pepsit36_summernote:
-    ...
+toinou_summernote:
     colors:
         - ['#000000', '#424242', '#636363', '#9C9C94', '#CEC6CE', '#EFEFEF', '#F7F7F7', '#FFFFFF']
         - ['#FF0000', '#FF9C00', '#FFFF00', '#00FF00', '#00FFFF', '#0000FF', '#9C00FF', '#FF00FF']
@@ -157,50 +187,22 @@ pepsit36_summernote:
 
 * **placeholder**: This will configure the placeholder.
 ```yml
-pepsit36_summernote:
-    ...
+toinou_summernote:
     placeholder: ''
 ```
 
 * **summernote_path**: This will configure the path of summernote's folder, if false the summernote's files will be not include. (default: false)
 ```yml
-pepsit36_summernote:
-    ...
+toinou_summernote:
     summernote_path: 'resources/summernote'
 ```
 
-* **images_path**: This will configure the path where will be storage uploaded images.
+* **images_path**: This will configure the path where images will be stored after uploading.
 ```yml
-pepsit36_summernote:
-    ...
+toinou_summernote:
     images_path: 'uploads/images/summernote'
 ```
 
-Usage
------
-Pepsit36/Summernote bundle provides a formtype. This example form uses it:
-
-```php
-class TestFormType extends AbstractType
-{
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
-        ...
-        $builder->add('test_content', SummernoteType::class);
-        ...
-
-    }
-    ...
-
-}
-```
-
-You also need to add some twig tags in your templates to import all CSS and JS needed to make summernote work: (form is your formview)
-```twig
-...
-{# Pepsit36/Summernote CSS - usefull only if summernote_path is configurate with one path #}
-{{ summernote_form_stylesheet(form) }}
-
-{# Pepsit36/Summernote JS #}
-{{ summernote_form_javascript(form) }}
-```
+Contributions
+-------------
+You are welcome!
