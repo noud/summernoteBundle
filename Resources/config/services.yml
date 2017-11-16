@@ -1,0 +1,18 @@
+services:
+    toinou_summernote.form.type.summernote:
+        class: Toinou\SummernoteBundle\Form\Type\SummernoteType
+        tags:
+            - { name: form.type, alias: toinou_summernote }
+
+    toinou_summernote.twig.extension.form:
+        class: Toinou\SummernoteBundle\Twig\Extension\FormExtension
+        arguments: ["@twig", "%toinou_summernote.widget.config%"]
+        tags:
+            - { name: twig.extension }
+
+    toinou_summernote.file_upload:
+        class: Toinou\SummernoteBundle\Service\FileUploader
+        arguments: 
+            - "@assets.packages"
+            - "%kernel.root_dir%"
+            - "%toinou_summernote.widget.config%"

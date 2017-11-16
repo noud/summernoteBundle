@@ -1,0 +1,3 @@
+_toinou_summernote_api_upload:
+    path:     /upload
+    defaults: { _controller: ToinouSummernoteBundle:Default:upload }
