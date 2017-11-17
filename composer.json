@@ -1,5 +1,5 @@
 {
-    "name": "toinou/summernoteBundle",
+    "name": "toinou/summernote-bundle",
     "type": "symfony-bundle",
     "description": "Provides a Summernote editor integration for Symfony 3 (WYSIWYG).",
     "keywords": ["summernote","wysiwyg","Symfony","editor"],
