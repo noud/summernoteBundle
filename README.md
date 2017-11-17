@@ -6,6 +6,8 @@ You have to know that this bundle isn't really mine but an adaptation of Pepsit3
 
 [Pepsit36/SummernoteBundle](https://github.com/Pepsit36/SummernoteBundle)
 
+[![SensioLabsInsight](https://insight.sensiolabs.com/projects/c8aad407-e2d4-45db-89fd-1ac30c87f81b/mini.png)](https://insight.sensiolabs.com/projects/c8aad407-e2d4-45db-89fd-1ac30c87f81b)
+
 Requirements
 ------------
 Minimum requirements for this bundle:
