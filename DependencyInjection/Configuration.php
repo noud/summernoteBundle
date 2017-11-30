@@ -73,6 +73,10 @@ class Configuration implements ConfigurationInterface
             ->end()
             ->defaultValue(array())
             ->end()
+            //Summernote Language
+            ->scalarNode('language')
+            ->defaultValue(false)
+            ->end()
             //Summernote Path
             ->scalarNode('summernote_path')
             ->defaultValue(false)
