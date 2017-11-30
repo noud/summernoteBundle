@@ -205,6 +205,12 @@ toinou_summernote:
     images_path: 'uploads/images/summernote'
 ```
 
+* **language**: This will configure summernote's language.
+```yml
+toinou_summernote:
+    language: 'fr_FR'
+```
+
 Contributions
 -------------
 You are welcome!
