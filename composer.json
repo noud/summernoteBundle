@@ -23,6 +23,6 @@
         "symfony/yaml": "^3.0"
     },
     "autoload": {
-        "psr-4": { "Toinou97434\\SummernoteBundle\\": "" }
+        "psr-4": { "Toinou\\SummernoteBundle\\": "" }
     }
 }
