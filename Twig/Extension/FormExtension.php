@@ -32,7 +32,7 @@ class FormExtension extends \Twig_Extension implements \Twig_Extension_GlobalsIn
     public function renderJavascript($form = null)
     {
         $this->template = $this->environment->loadTemplate(
-            'ToinouSummernoteBundle:Form:summernoteJavascript.html.twig'
+            '@ToinouSummernote/Form/summernoteJavascript.html.twig'
         );
         $formOptions = array();
         foreach ($form as $child) {

@@ -18,7 +18,7 @@ class ToinouSummernoteExtension extends Extension implements PrependExtensionInt
     /**
      * @var string
      */
-    protected $formTypeTemplate = 'ToinouSummernoteBundle:Form:summernoteField.html.twig';
+    protected $formTypeTemplate = '@ToinouSummernote/Form/summernoteField.html.twig';
 
     /**
      * {@inheritdoc}
