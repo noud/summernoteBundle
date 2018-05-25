@@ -27,6 +27,26 @@ You have two ways to download and install the bundle:
     }
 }
 ```
+Given there is no tag yet you have to add the following to your `composer.json` file:
+```json
+    "repositories": [
+        {
+            "type": "package",
+            "package": {
+                "name": "Toinou97434/summernoteBundle",
+                "version": "master",
+                "dist": {
+                    "type": "zip",
+                    "url": "https://github.com/Toinou97434/summernoteBundle/archive/master.zip",
+                    "reference": "master"
+                },
+                "autoload": {
+                    "classmap": ["."]
+                }
+            }
+        }
+    ]
+```
 and making your composer update:
 ```command
 php composer.phar update
